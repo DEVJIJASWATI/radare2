@@ -574,7 +574,7 @@ static RBinReloc *reloc_convert(struct Elf_(r_bin_elf_obj_t) *bin, RBinElfReloc 
 	ut64 P = rel->rva; // rva has taken baddr into account
 	RBinReloc *r = R_NEW0 (RBinReloc);
 	if (!r) {
-		return r;
+		return NULL;
 	}
 	r->import = NULL;
 	r->symbol = NULL;
@@ -654,8 +654,7 @@ static RBinReloc *reloc_convert(struct Elf_(r_bin_elf_obj_t) *bin, RBinElfReloc 
 	#undef SET
 	#undef ADD
 
-	free (r);
-	return 0;
+	return r;
 }
 
 static RList* relocs(RBinFile *bf) {
@@ -855,11 +854,13 @@ static RList* patch_relocs(RBin *b) {
 	int i;
 	ut64 n_vaddr, vaddr, size, offset = 0;
 
-	if (!b)
+	if (!b) {
 		return NULL;
+	}
 	io = b->iob.io;
-	if (!io || !io->desc)
+	if (!io || !io->desc) {
 		return NULL;
+	}
 	obj = r_bin_cur_object (b);
 	if (!obj) {
 	   	return NULL;
