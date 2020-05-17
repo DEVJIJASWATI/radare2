@@ -99,7 +99,7 @@ R_API char *r_type_enum_getbitfield(Sdb *TDB, const char *name, ut64 val) {
 	bool isFirst = true;
 	ret = r_str_appendf (ret, "0x%08"PFMT64x" : ", val);
 	for (i = 0; i < 32; i++) {
-		if (!(val & (1 << i))) {
+		if (!(val & ((ut32)1 << i))) {
 			continue;
 		}
 		q = sdb_fmt ("enum.%s.0x%x", name, (1<<i));
